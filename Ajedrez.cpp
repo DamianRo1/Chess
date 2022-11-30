@@ -1,37 +1,37 @@
 #include <iostream>
 #include <stdlib.h>
-class Piezas
+class Pieza
 {
 public:
-    Piezas(char Color) : mColor(Color) {}
-    ~Piezas() {}
+    Pieza(char Color) : mColor(Color) {}
+    ~Pieza() {}
     virtual char GetPieza() = 0;
     char GetColor() {
         return mColor;
     }
-    bool EsLegal(int iSrcRow, int iSrcCol, int iDestRow, int iDestCol, Piezas* Tablero[8][8]) {
-        Piezas* qpDest = Tablero[iDestRow][iDestCol];
+    bool EsLegal(int iSrcRow, int iSrcCol, int iDestRow, int iDestCol, Pieza* Tablero[8][8]) {
+        Pieza* qpDest = Tablero[iDestRow][iDestCol];
         if ((qpDest == 0) || (mColor != qpDest->GetColor())) {
             return CuadLegal(iSrcRow, iSrcCol, iDestRow, iDestCol, Tablero);
         }
         return false;
     }
 private:
-    virtual bool CuadLegal(int iSrcRow, int iSrcCol, int iDestRow, int iDestCol, Piezas* Tablero[8][8]) = 0;
+    virtual bool CuadLegal(int iSrcRow, int iSrcCol, int iDestRow, int iDestCol, Pieza* Tablero[8][8]) = 0;
     char mColor;
 };
 
-class Pn : public Piezas
+class Pn : public Pieza
 {
 public:
-    Pn(char Color) : Piezas(Color) {}
+    Pn(char Color) : Pieza(Color) {}
     ~Pn() {}
 private:
     virtual char GetPieza() {
         return 'P';
     }
-    bool CuadLegal(int iSrcRow, int iSrcCol, int iDestRow, int iDestCol, Piezas* Tablero[8][8]) {
-        Piezas* qpDest = Tablero[iDestRow][iDestCol];
+    bool CuadLegal(int iSrcRow, int iSrcCol, int iDestRow, int iDestCol, Pieza* Tablero[8][8]) {
+        Pieza* qpDest = Tablero[iDestRow][iDestCol];
         if (qpDest == 0) {
             if (iSrcCol == iDestCol) {
                 if (GetColor() == '#') {
@@ -61,16 +61,16 @@ private:
     }
 };
 
-class Cb : public Piezas
+class Cb : public Pieza
 {
 public:
-    Cb(char Color) : Piezas(Color) {}
+    Cb(char Color) : Pieza(Color) {}
     ~Cb() {}
 private:
     virtual char GetPieza() {
         return 'C';
     }
-    bool CuadLegal(int iSrcRow, int iSrcCol, int iDestRow, int iDestCol, Piezas* Tablero[8][8]) {
+    bool CuadLegal(int iSrcRow, int iSrcCol, int iDestRow, int iDestCol, Pieza* Tablero[8][8]) {
         if ((iSrcCol == iDestCol + 1) || (iSrcCol == iDestCol - 1)) {
             if ((iSrcRow == iDestRow + 2) || (iSrcRow == iDestRow - 2)) {
                 return true;
@@ -85,16 +85,16 @@ private:
     }
 };
 
-class Al : public Piezas
+class Al : public Pieza
 {
 public:
-    Al(char Color) : Piezas(Color) {}
+    Al(char Color) : Pieza(Color) {}
     ~Al() {}
 private:
     virtual char GetPieza() {
         return 'A';
     }
-    bool CuadLegal(int iSrcRow, int iSrcCol, int iDestRow, int iDestCol, Piezas* Tablero[8][8]) {
+    bool CuadLegal(int iSrcRow, int iSrcCol, int iDestRow, int iDestCol, Pieza* Tablero[8][8]) {
         if ((iDestCol - iSrcCol == iDestRow - iSrcRow) || (iDestCol - iSrcCol == iSrcRow - iDestRow)) {
             int iRowOffset = (iDestRow - iSrcRow > 0) ? 1 : -1;
             int iColOffset = (iDestCol - iSrcCol > 0) ? 1 : -1;
@@ -114,16 +114,16 @@ private:
     }
 };
 
-class Tr : public Piezas
+class Tr : public Pieza
 {
 public:
-    Tr(char Color) : Piezas(Color) {}
+    Tr(char Color) : Pieza(Color) {}
     ~Tr() {}
 private:
     virtual char GetPieza() {
         return 'T';
     }
-    bool CuadLegal(int iSrcRow, int iSrcCol, int iDestRow, int iDestCol, Piezas* Tablero[8][8]) {
+    bool CuadLegal(int iSrcRow, int iSrcCol, int iDestRow, int iDestCol, Pieza* Tablero[8][8]) {
         if (iSrcRow == iDestRow) {
             int iColOffset = (iDestCol - iSrcCol > 0) ? 1 : -1;
             for (int iCheckCol = iSrcCol + iColOffset; iCheckCol !=  iDestCol; iCheckCol = iCheckCol + iColOffset) {
@@ -145,16 +145,16 @@ private:
     }
 };
 
-class Qn : public Piezas
+class Qn : public Pieza
 {
 public:
-    Qn(char Color) : Piezas(Color) {}
+    Qn(char Color) : Pieza(Color) {}
     ~Qn() {}
 private:
     virtual char GetPieza() {
         return 'Q';
     }
-    bool CuadLegal(int iSrcRow, int iSrcCol, int iDestRow, int iDestCol, Piezas* Tablero[8][8]) {
+    bool CuadLegal(int iSrcRow, int iSrcCol, int iDestRow, int iDestCol, Pieza* Tablero[8][8]) {
         if (iSrcRow == iDestRow) {
             int iColOffset = (iDestCol - iSrcCol > 0) ? 1 : -1;
             for (int iCheckCol = iSrcCol + iColOffset; iCheckCol !=  iDestCol; iCheckCol = iCheckCol + iColOffset) {
@@ -190,16 +190,16 @@ private:
     }
 };
 
-class Ry : public Piezas
+class Ry : public Pieza
 {
 public:
-    Ry(char Color) : Piezas(Color) {}
+    Ry(char Color) : Pieza(Color) {}
     ~Ry() {}
 private:
     virtual char GetPieza() {
         return 'R';
     }
-    bool CuadLegal(int iSrcRow, int iSrcCol, int iDestRow, int iDestCol, Piezas* Tablero[8][8]) {
+    bool CuadLegal(int iSrcRow, int iSrcCol, int iDestRow, int iDestCol, Pieza* Tablero[8][8]) {
         int iRowDelta = iDestRow - iSrcRow;
         int iColDelta = iDestCol - iSrcCol;
         if (((iRowDelta >= -1) && (iRowDelta <= 1)) &&
@@ -340,7 +340,7 @@ public:
                         for (int iMoveRow = 0; iMoveRow < 8; ++iMoveRow) {
                             for (int iMoveCol = 0; iMoveCol < 8; ++iMoveCol) {
                                 if (TabPrin[iRow][iCol]->EsLegal(iRow, iCol, iMoveRow, iMoveCol, TabPrin)) {
-                                    Piezas* qpTemp                   = TabPrin[iMoveRow][iMoveCol];
+                                    Pieza* qpTemp                   = TabPrin[iMoveRow][iMoveCol];
                                     TabPrin[iMoveRow][iMoveCol]   = TabPrin[iRow][iCol];
                                     TabPrin[iRow][iCol]           = 0;
                                     bool bCanMove = !EnJaque(Color);
@@ -359,24 +359,24 @@ public:
         return false;
     }
 
-    Piezas* TabPrin[8][8];
+    Pieza* TabPrin[8][8];
 };
 
 class ATab
 {
 public:
-    ATab() : mcTJ('#') {}
+    ATab() : mcTurno('#') {}
     ~ATab() {}
 
     void Start() {
         do {
-            GetNextMove(mqTab.TabPrin);
+            GetSigMov(mqTab.TabPrin);
             Turno();
         } while (!Fin());
         mqTab.Print();
     }
 
-    void GetNextMove(Piezas* Tablero[8][8]) {
+    void GetSigMov(Pieza* Tablero[8][8]) {
         using namespace std;
         bool bMoVal     = false;
         do {
@@ -384,7 +384,7 @@ public:
             cout<<"Ajedrez "<<endl;
             mqTab.Print();
 
-            cout << "Turno de "<< mcTJ << ": ";
+            cout << "Turno de "<< mcTurno << ": ";
             int iStartMove;
             cin >> iStartMove;
             int iStartRow = (iStartMove / 10) - 1;
@@ -400,13 +400,13 @@ public:
                 (iStartCol >= 0 && iStartCol <= 7) &&
                 (iEndRow >= 0 && iEndRow <= 7) &&
                 (iEndCol >= 0 && iEndCol <= 7)) {
-                Piezas* qpPiezActu = Tablero[iStartRow][iStartCol];
-                if ((qpPiezActu != 0) && (qpPiezActu->GetColor() == mcTJ)) {
+                Pieza* qpPiezActu = Tablero[iStartRow][iStartCol];
+                if ((qpPiezActu != 0) && (qpPiezActu->GetColor() == mcTurno)) {
                     if (qpPiezActu->EsLegal(iStartRow, iStartCol, iEndRow, iEndCol, Tablero)) {
-                        Piezas* qpTemp                   = Tablero[iEndRow][iEndCol];
+                        Pieza* qpTemp                   = Tablero[iEndRow][iEndCol];
                         Tablero[iEndRow][iEndCol]     = Tablero[iStartRow][iStartCol];
                         Tablero[iStartRow][iStartCol] = 0;
-                        if (!mqTab.EnJaque(mcTJ)) {
+                        if (!mqTab.EnJaque(mcTurno)) {
                             delete qpTemp;
                             bMoVal = true;
                         } else {
@@ -423,16 +423,16 @@ public:
     }
 
     void Turno() {
-        mcTJ = (mcTJ == '#') ? '0' : '#';
+        mcTurno = (mcTurno == '#') ? '0' : '#';
     }
 
     bool Fin() {
         bool bCanMove(false);
-        bCanMove = mqTab.CanMove(mcTJ);
+        bCanMove = mqTab.CanMove(mcTurno);
         if (!bCanMove) {
-            if (mqTab.EnJaque(mcTJ)) {
+            if (mqTab.EnJaque(mcTurno)) {
                 Turno();
-                std::cout << "Jaque mate, " << mcTJ << " Gana" << std::endl;
+                std::cout << "Jaque mate, " << mcTurno << " Gana" << std::endl;
             } else {
                 std::cout << "empate" << std::endl;
             }
@@ -441,7 +441,7 @@ public:
     }
 private:
     CTab mqTab;
-    char mcTJ;
+    char mcTurno;
 };
 
 int main() {
